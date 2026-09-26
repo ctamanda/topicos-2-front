@@ -1,0 +1,74 @@
+<mat-toolbar class="mat-toolbar">
+    <div class="flex-container">
+        <span class="toolbar-title">Controle de Transações</span>
+    </div>
+</mat-toolbar>
+
+<mat-form-field appearance="outline" class="flex-container">
+    <mat-label>Filtro por descrição</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mercado" #input>
+</mat-form-field>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!-- Numero Column -->
+    <ng-container matColumnDef="numero">
+        <th mat-header-cell *matHeaderCellDef> Número </th>
+        <td mat-cell *matCellDef="let obj; let i = index"> {{pageIndex * pageSize + i + 1}} </td>
+    </ng-container>
+
+    <!-- Descricao Column -->
+    <ng-container matColumnDef="descricao">
+        <th mat-header-cell *matHeaderCellDef> Descrição </th>
+        <td mat-cell *matCellDef="let obj"> {{obj.descricao}} </td>
+    </ng-container>
+
+    <!-- Categoria Column -->
+    <ng-container matColumnDef="categoria">
+        <th mat-header-cell *matHeaderCellDef> Categoria </th>
+        <td mat-cell *matCellDef="let obj"> {{obj.categoria?.nome}} </td>
+    </ng-container>
+
+    <!-- Tipo Column -->
+    <ng-container matColumnDef="tipo">
+        <th mat-header-cell *matHeaderCellDef> Tipo </th>
+        <td mat-cell *matCellDef="let obj">
+            <span class="tipo" [class.receita]="obj.tipo === 'RECEITA'" [class.despesa]="obj.tipo === 'DESPESA'">
+                {{rotulosTipo[obj.tipo]}}
+            </span>
+        </td>
+    </ng-container>
+
+    <!-- Escopo Column -->
+    <ng-container matColumnDef="escopo">
+        <th mat-header-cell *matHeaderCellDef> Escopo </th>
+        <td mat-cell *matCellDef="let obj"> {{rotulosEscopo[obj.escopo]}} </td>
+    </ng-container>
+
+    <!-- Data Column -->
+    <ng-container matColumnDef="data">
+        <th mat-header-cell *matHeaderCellDef> Data </th>
+        <td mat-cell *matCellDef="let obj"> {{obj.data | date: 'dd/MM/yyyy'}} </td>
+    </ng-container>
+
+    <!-- Valor Column -->
+    <ng-container matColumnDef="valor">
+        <th mat-header-cell *matHeaderCellDef> Valor </th>
+        <td mat-cell *matCellDef="let obj"> {{moeda.format(obj.valor)}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+@if (carregou && totalItems === 0) {
+    <p class="mensagem" role="status">Nenhuma transação encontrada.</p>
+}
+
+<mat-paginator
+    [length]="totalItems"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 20]"
+    (page)="onPageChange($event)">
+</mat-paginator>

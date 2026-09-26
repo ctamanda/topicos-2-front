@@ -1,0 +1,63 @@
+.toolbar-title {
+    flex: 1;
+    text-align: center;
+}
+
+.flex-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.mat-column-numero {
+    width: 5em;
+    text-align: center;
+}
+
+.mat-column-descricao {
+    width: 100%;
+}
+
+.mat-column-categoria {
+    min-width: 12em;
+    width: 12em;
+}
+
+.mat-column-tipo,
+.mat-column-escopo {
+    min-width: 7em;
+    width: 7em;
+}
+
+.mat-column-data {
+    min-width: 8em;
+    width: 8em;
+}
+
+.mat-column-valor {
+    min-width: 9em;
+    width: 9em;
+    text-align: right;
+}
+
+.tipo {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.tipo.receita {
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.tipo.despesa {
+    background: #ffebee;
+    color: #b71c1c;
+}
+
+.mensagem {
+    margin: 16px;
+    text-align: center;
+}
