@@ -6,6 +6,12 @@ import { adminGuard, authGuard, visitanteGuard } from './core/auth/auth.guard';
 // Telas de Estados/Municípios saíram do menu: o back atual não tem esses endpoints.
 export const routes: Routes = [
     {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./components/landing/landing').then((m) => m.Landing),
+        title: 'FinControl · Controle financeiro para você e sua empresa',
+    },
+    {
         path: 'login',
         loadComponent: () => import('./components/auth/login/login').then((m) => m.Login),
         title: 'Entrar · FinControl',
@@ -23,7 +29,6 @@ export const routes: Routes = [
         component: Shell,
         canActivate: [authGuard],
         children: [
-            {path: '', pathMatch: 'full', redirectTo: 'dashboard'},
             {
                 path: 'dashboard',
                 loadComponent: () => import('./components/dashboard/dashboard').then((m) => m.Dashboard),
