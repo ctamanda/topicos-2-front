@@ -1,0 +1,1 @@
+function r(t,a=e()){return a<t.vigenciaInicio?`FUTURO`:a>t.vigenciaFim?`ENCERRADO`:`VIGENTE`}function e(){let t=new Date,a=String(t.getMonth()+1).padStart(2,`0`),i=String(t.getDate()).padStart(2,`0`);return`${t.getFullYear()}-${a}-${i}`}export{r as n,e as t};

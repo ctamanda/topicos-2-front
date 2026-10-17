@@ -1,0 +1,1 @@
+var e={PF:`Pessoa Física`,MEI:`Microempreendedor Individual (MEI)`,ME:`Microempresa (ME)`};var i={COMERCIO:`Comércio`,SERVICO:`Serviço`,AMBOS:`Comércio e Serviço`};export{i as n,e as t};
