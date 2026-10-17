@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 
-// Fundo decorativo do login/cadastro: formas suaves, moedas e um gráfico em alta.
+// Fundo decorativo (roxo) do login/cadastro: formas suaves, moedas e um gráfico em alta.
 @Component({
   selector: 'app-fundo-auth',
   template: `
     <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
         <radialGradient id="brilho" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#1c8a6c" stop-opacity=".55" />
-          <stop offset="100%" stop-color="#1c8a6c" stop-opacity="0" />
+          <stop offset="0%" stop-color="#6d3cc9" stop-opacity=".55" />
+          <stop offset="100%" stop-color="#6d3cc9" stop-opacity="0" />
         </radialGradient>
         <linearGradient id="linha" x1="0" x2="1">
-          <stop offset="0%" stop-color="#f5c518" stop-opacity="0" />
-          <stop offset="60%" stop-color="#f5c518" stop-opacity=".55" />
-          <stop offset="100%" stop-color="#f5c518" stop-opacity=".9" />
+          <stop offset="0%" stop-color="#facc15" stop-opacity="0" />
+          <stop offset="60%" stop-color="#facc15" stop-opacity=".55" />
+          <stop offset="100%" stop-color="#facc15" stop-opacity=".9" />
         </linearGradient>
       </defs>
 
@@ -25,7 +25,7 @@ import { Component } from '@angular/core';
         d="M-20 760 C 160 720, 240 640, 380 660 S 600 560, 720 590 S 940 440, 1080 470 S 1300 300, 1460 260"
         fill="none" stroke="url(#linha)" stroke-width="3" stroke-linecap="round"
       />
-      <g fill="#f5c518">
+      <g fill="#facc15">
         <circle cx="380" cy="660" r="6" opacity=".5" />
         <circle cx="720" cy="590" r="6" opacity=".6" />
         <circle cx="1080" cy="470" r="6" opacity=".75" />
@@ -44,10 +44,10 @@ import { Component } from '@angular/core';
 
       <!-- moedas flutuando -->
       <g>
-        <circle cx="1150" cy="640" r="26" fill="#f5c518" opacity=".18" />
-        <circle cx="1150" cy="640" r="17" fill="none" stroke="#f5c518" stroke-width="2" opacity=".35" />
-        <circle cx="300" cy="300" r="18" fill="#f5c518" opacity=".15" />
-        <circle cx="300" cy="300" r="11" fill="none" stroke="#f5c518" stroke-width="2" opacity=".3" />
+        <circle cx="1150" cy="640" r="26" fill="#facc15" opacity=".18" />
+        <circle cx="1150" cy="640" r="17" fill="none" stroke="#facc15" stroke-width="2" opacity=".35" />
+        <circle cx="300" cy="300" r="18" fill="#facc15" opacity=".15" />
+        <circle cx="300" cy="300" r="11" fill="none" stroke="#facc15" stroke-width="2" opacity=".3" />
         <circle cx="980" cy="160" r="12" fill="#ffffff" opacity=".1" />
         <circle cx="520" cy="820" r="14" fill="#ffffff" opacity=".08" />
       </g>
@@ -59,7 +59,7 @@ import { Component } from '@angular/core';
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      background: linear-gradient(160deg, #0b4a3c 0%, #0d5646 45%, #0f6b53 100%);
+      background: linear-gradient(160deg, #2e0f60 0%, #3b1478 45%, #4c1d95 100%);
     }
     svg {
       width: 100%;

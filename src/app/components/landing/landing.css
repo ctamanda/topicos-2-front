@@ -14,7 +14,7 @@
 .btn-amarelo.mat-mdc-unelevated-button,
 .btn-claro.mat-mdc-unelevated-button,
 .btn-escuro.mat-mdc-unelevated-button,
-.btn-verde-arred.mat-mdc-unelevated-button {
+.btn-roxo.mat-mdc-unelevated-button {
   --mat-button-filled-container-shape: 12px;
   height: 44px;
   padding: 0 22px;
@@ -27,7 +27,7 @@
 }
 
 .btn-claro.mat-mdc-unelevated-button {
-  --mat-button-filled-container-color: #157a5f;
+  --mat-button-filled-container-color: #5b2bb5;
   --mat-button-filled-label-text-color: #fff;
 }
 
@@ -36,8 +36,8 @@
   --mat-button-filled-label-text-color: #fff;
 }
 
-.btn-verde-arred.mat-mdc-unelevated-button {
-  --mat-button-filled-container-color: var(--fc-verde);
+.btn-roxo.mat-mdc-unelevated-button {
+  --mat-button-filled-container-color: var(--fc-roxo);
   --mat-button-filled-label-text-color: #fff;
 }
 
@@ -50,8 +50,8 @@
 /* ---------- Topo / destaque ---------- */
 .topo {
   background:
-    radial-gradient(900px 500px at 85% 20%, rgba(31, 142, 111, 0.45), transparent 70%),
-    linear-gradient(170deg, #0a4537 0%, #0d5646 55%, #0f6450 100%);
+    radial-gradient(900px 500px at 85% 20%, rgba(109, 60, 201, 0.45), transparent 70%),
+    linear-gradient(170deg, #2a0e57 0%, #3b1478 55%, #4a1d96 100%);
   color: #fff;
   overflow: hidden;
 }
@@ -79,7 +79,7 @@
   border: none;
   font: inherit;
   cursor: pointer;
-  color: #d7ebe4;
+  color: #e4daf7;
   font-size: 15px;
   padding: 0;
 }
@@ -158,7 +158,7 @@
 .hero p {
   font-size: 19px;
   line-height: 1.55;
-  color: #d7ebe4;
+  color: #e4daf7;
   margin: 0 0 34px;
   max-width: 560px;
 }
@@ -177,7 +177,7 @@
   gap: 22px;
   flex-wrap: wrap;
   font-size: 14px;
-  color: #cfe5dd;
+  color: #d8ccf0;
 }
 
 .hero-garantias li {
@@ -187,7 +187,7 @@
 }
 
 .hero-garantias mat-icon {
-  color: #6fd3a8;
+  color: #facc15;
   font-size: 18px;
   width: 18px;
   height: 18px;
@@ -229,7 +229,7 @@
 
 .janela-menu {
   height: 34px;
-  background: var(--fc-verde);
+  background: var(--fc-roxo);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -265,7 +265,7 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--fc-verde);
+  background: var(--fc-roxo);
 }
 
 .ola strong {
@@ -373,14 +373,14 @@
   width: 190px;
   background: #fff;
   border-radius: 26px;
-  border: 7px solid #10322a;
+  border: 7px solid #1e0a40;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   color: var(--fc-text);
 }
 
 .cel-topo {
-  background: var(--fc-verde);
+  background: var(--fc-roxo);
   color: #fff;
   padding: 18px 14px 26px;
 }
@@ -388,7 +388,7 @@
 .cel-topo small {
   display: block;
   font-size: 10px;
-  color: #cfe5dd;
+  color: #d8ccf0;
 }
 
 .cel-topo strong {
@@ -519,11 +519,11 @@
 }
 
 .secao.cinza {
-  background: #f4f6f5;
+  background: #f5f3f8;
 }
 
-.secao.verde {
-  background: var(--fc-verde-escuro);
+.secao.roxa {
+  background: var(--fc-roxo-escuro);
   color: #fff;
 }
 
@@ -556,8 +556,8 @@
   max-width: 640px;
 }
 
-.verde .texto-secao {
-  color: #cfe5dd;
+.roxa .texto-secao {
+  color: #d8ccf0;
 }
 
 .recursos {
@@ -575,7 +575,7 @@
 }
 
 .recurso:hover {
-  box-shadow: 0 14px 34px rgba(13, 86, 70, 0.12);
+  box-shadow: 0 14px 34px rgba(59, 20, 120, 0.12);
   transform: translateY(-3px);
 }
 
@@ -583,7 +583,7 @@
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background: var(--fc-verde-claro);
+  background: var(--fc-roxo-claro);
   color: var(--fc-primary);
   display: grid;
   place-items: center;
@@ -619,7 +619,7 @@
 }
 
 .publico.destaque {
-  background: var(--fc-verde);
+  background: var(--fc-roxo);
   color: #fff;
 }
 
@@ -627,7 +627,7 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: var(--fc-verde-claro);
+  background: var(--fc-roxo-claro);
   color: var(--fc-primary);
   display: grid;
   place-items: center;
@@ -651,7 +651,7 @@
 }
 
 .destaque p {
-  color: #cfe5dd;
+  color: #d8ccf0;
 }
 
 .publico ul {
@@ -756,7 +756,7 @@
   border-radius: 10px;
   padding: 8px 14px;
   font-size: 13px;
-  color: #e6f3ee;
+  color: #eee7fa;
 }
 
 .endpoints b {
@@ -769,8 +769,8 @@
 .chamada {
   text-align: center;
   background:
-    radial-gradient(600px 300px at 50% 0%, rgba(245, 197, 24, 0.18), transparent 70%),
-    #f4f6f5;
+    radial-gradient(600px 300px at 50% 0%, rgba(250, 204, 21, 0.18), transparent 70%),
+    #f5f3f8;
 }
 
 .chamada p {
@@ -781,8 +781,8 @@
 
 /* Rodapé */
 .rodape {
-  background: var(--fc-verde-escuro);
-  color: #9fc2b6;
+  background: var(--fc-roxo-escuro);
+  color: #b5a3dc;
   font-size: 13px;
 }
 
@@ -822,7 +822,7 @@
     right: 0;
     flex-direction: column;
     gap: 0;
-    background: var(--fc-verde-escuro);
+    background: var(--fc-roxo-escuro);
     padding: 8px 0;
     z-index: 10;
   }

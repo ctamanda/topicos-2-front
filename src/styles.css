@@ -1,14 +1,14 @@
 /* =====================================================================
    FinControl - estilos globais
-   Verde-escuro + amarelo, cards brancos, rótulos acima dos campos e
+   Roxo + amarelo (cores da marca), cards brancos, rótulos acima dos campos e
    valores em azul (positivo) / vermelho (negativo).
    ===================================================================== */
 :root {
-  --fc-verde: #0d5646;
-  --fc-verde-escuro: #08463a;
-  --fc-verde-medio: #0f6b53;
-  --fc-verde-claro: #e8f5f0;
-  --fc-amarelo: #f5c518;
+  --fc-roxo: #3b1478;
+  --fc-roxo-escuro: #2a0e57;
+  --fc-roxo-medio: #4c1d95;
+  --fc-roxo-claro: #f3edfc;
+  --fc-amarelo: #facc15;
 
   --fc-bg: #f2f3f5;
   --fc-surface: #ffffff;
@@ -16,8 +16,8 @@
   --fc-text: #2b2f33;
   --fc-muted: #737b84;
 
-  --fc-primary: #0f6b53;
-  --fc-primary-soft: #e8f5f0;
+  --fc-primary: #4c1d95;
+  --fc-primary-soft: #f3edfc;
   --fc-azul: #2b5fb4;
   --fc-azul-soft: #edf2fb;
   --fc-success: #1e8a5f;
@@ -331,7 +331,7 @@ a {
 
 .busca input:focus {
   border-color: var(--fc-primary);
-  background: #f2fbf8;
+  background: #f8f4fe;
 }
 
 .estado-vazio {
@@ -403,7 +403,7 @@ a {
 .campo input:focus,
 .campo select:focus {
   border-color: var(--fc-primary);
-  background: #f2fbf8;
+  background: #f8f4fe;
 }
 
 .campo.invalido input,
@@ -469,8 +469,8 @@ a {
   max-width: 760px;
 }
 
-/* Botão principal verde com ✓ */
-.btn-verde.mat-mdc-unelevated-button {
+/* Botão principal (roxo) com ✓ */
+.btn-primario.mat-mdc-unelevated-button {
   height: 40px;
   padding: 0 18px;
   font-size: 15px;
@@ -545,7 +545,7 @@ a {
 .opcao.selecionada {
   border-style: solid;
   border-color: var(--fc-primary);
-  background: var(--fc-verde-claro);
+  background: var(--fc-roxo-claro);
 }
 
 .opcao.selecionada::before {
