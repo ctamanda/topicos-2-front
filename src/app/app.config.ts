@@ -1,15 +1,21 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
 import { provideRouter } from '@angular/router';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './core/auth/auth.interceptor';
+
+// Datas, moeda (R$) e números no formato brasileiro.
+registerLocaleData(localePt);
 
 function getPtBrPaginatorIntl(): MatPaginatorIntl {
   const paginatorIntl = new MatPaginatorIntl();
 
   paginatorIntl.itemsPerPageLabel = 'Itens por página:';
   paginatorIntl.nextPageLabel = 'Próxima página';
-  paginatorIntl.previousPageLabel = 'ágina anterior';
+  paginatorIntl.previousPageLabel = 'Página anterior';
   paginatorIntl.firstPageLabel = 'Primeira página';
   paginatorIntl.lastPageLabel = 'Última página';
   paginatorIntl.getRangeLabel = (page: number, pageSize: number, length: number) => {
@@ -30,8 +36,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
     { provide: MatPaginatorIntl, useFactory: getPtBrPaginatorIntl }
   ]
 };
-
