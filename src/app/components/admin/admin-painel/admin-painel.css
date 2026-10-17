@@ -11,7 +11,7 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: var(--fc-verde);
+  background: var(--fc-roxo);
   color: var(--fc-amarelo);
   display: grid;
   place-items: center;
@@ -220,7 +220,7 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: var(--fc-verde);
+  background: var(--fc-roxo);
   color: #fff;
   display: grid;
   place-items: center;
@@ -277,7 +277,7 @@
 }
 
 .lista-lgpd mat-icon {
-  color: var(--fc-verde-medio);
+  color: var(--fc-roxo-medio);
   font-size: 20px;
   width: 20px;
   height: 20px;

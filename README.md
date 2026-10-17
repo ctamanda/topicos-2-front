@@ -1,59 +1,238 @@
-# HelloWorld
+<p align="center">
+  <img src="public/logo/fincontrol-simbolo-fundo-claro.svg" alt="FinControl" width="96" />
+</p>
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.5.
+<h1 align="center">FinControl — Frontend</h1>
 
-## Development server
+<p align="center">
+  Interface web do FinControl, sistema de controle financeiro para pessoas, MEIs e microempresas.<br />
+  Projeto da disciplina de Tópicos II.
+</p>
 
-To start a local development server, run:
+<p align="center">
+  <a href="https://ctamanda.github.io/topicos-2-front/"><b>Ver online (GitHub Pages)</b></a> ·
+  <a href="https://github.com/ctamanda/topicos-2-back">Backend (API)</a>
+</p>
+
+---
+
+## Sumário
+
+- [Visão geral](#visão-geral)
+- [Tecnologias](#tecnologias)
+- [Como executar](#como-executar)
+- [Usuários para teste](#usuários-para-teste)
+- [Estrutura de pastas](#estrutura-de-pastas)
+- [Rotas e telas](#rotas-e-telas)
+- [Autenticação](#autenticação)
+- [Comunicação com a API](#comunicação-com-a-api)
+- [Identidade visual](#identidade-visual)
+- [Padrões de código](#padrões-de-código)
+- [Publicação no GitHub Pages](#publicação-no-github-pages)
+- [Observações](#observações)
+
+---
+
+## Visão geral
+
+O frontend consome a API REST do FinControl e oferece:
+
+| Para quem | O que pode fazer |
+|---|---|
+| **Visitante** | Ver a página de apresentação, criar conta ("Para mim" ou "Para minha empresa") e entrar |
+| **Usuário (USER)** | Ver a visão geral do mês, lançar receitas e despesas, gerenciar categorias e editar o perfil |
+| **Administrador (ADMIN)** | Tudo do usuário + painel com estatísticas agregadas e CRUD de parâmetros fiscais |
+
+Cada usuário enxerga **apenas os próprios dados**. O administrador vê somente números agregados (LGPD).
+
+## Tecnologias
+
+| | |
+|---|---|
+| Framework | **Angular 22** (componentes *standalone*, *signals*, sem Zone.js) |
+| UI | Angular Material 22 (tabela, paginação, diálogos, menus) + CSS próprio |
+| Formulários | Reactive Forms |
+| HTTP | `HttpClient` com interceptor funcional |
+| Testes | Vitest |
+| Build | `@angular/build` (esbuild), *lazy loading* por rota |
+| Deploy | GitHub Actions → branch `gh-pages` → GitHub Pages |
+
+## Como executar
+
+### Pré-requisitos
+
+- **Node.js 22** (ou superior) e npm
+- **Backend rodando** em `http://localhost:8080` — veja o [README do backend](https://github.com/ctamanda/topicos-2-back)
+
+### Passos
 
 ```bash
-ng serve
+git clone https://github.com/ctamanda/topicos-2-front.git
+cd topicos-2-front
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Abra **http://localhost:4200**.
 
-## Code scaffolding
+### Outros comandos
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+| Comando | O que faz |
+|---|---|
+| `npm start` | Servidor de desenvolvimento com recarga automática |
+| `npm run build` | Build de produção em `dist/hello-world/browser` |
+| `npm test` | Testes unitários (Vitest) |
 
-```bash
-ng generate component component-name
+## Usuários para teste
+
+| Perfil | E-mail | Senha | Observação |
+|---|---|---|---|
+| ADMIN | `admin@fincontrol.com` | `admin123` | Criado pela migration `V10` do backend |
+| USER | — | — | Crie pela tela **Experimente grátis** |
+
+> Ao criar uma conta, o backend já gera 6 categorias: Alimentação, Moradia, Transporte, Lazer, Salário e Vendas.
+
+## Estrutura de pastas
+
+```
+src/
+├── index.html                  # favicon, fontes e cor do tema
+├── material-theme.scss         # tema do Angular Material (roxo + amarelo)
+├── styles.css                  # tokens de cor (--fc-*) e estilos globais
+└── app/
+    ├── app.config.ts           # providers: rotas, HttpClient + interceptor, locale pt-BR
+    ├── app.routes.ts           # rotas (lazy loading) e guards
+    ├── core/
+    │   ├── api.ts              # API_URL e tradução de erros (RFC 7807)
+    │   ├── auth/               # AuthService, interceptor e guards
+    │   └── usuario/            # UsuarioService (GET/PUT /usuarios/me)
+    ├── models/                 # tipos: usuário, auth, transação, categoria, admin
+    ├── services/               # acesso à API: transações, categorias, admin
+    └── components/
+        ├── landing/            # página inicial pública
+        ├── auth/               # login e cadastro (2 etapas)
+        ├── layout/shell/       # barra superior + menu (área logada)
+        ├── dashboard/          # visão geral do usuário
+        ├── transacoes/         # lista e formulário
+        ├── categorias/         # lista e formulário
+        ├── perfil/             # dados do usuário
+        ├── admin/              # painel, lista e formulário de parâmetros
+        └── shared/             # logo, valor monetário, diálogo, fundo do login
+public/
+├── favicon.svg
+└── logo/                       # símbolo para fundo claro e escuro
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Rotas e telas
 
-```bash
-ng generate --help
+| Rota | Tela | Acesso |
+|---|---|---|
+| `/` | Página inicial (apresentação do sistema e da API) | Público |
+| `/login` | Login | Só visitante¹ |
+| `/cadastro` | Cadastro em 2 etapas (`?perfil=empresa` já marca "Para minha empresa") | Só visitante¹ |
+| `/dashboard` | Visão geral: saldo, receitas/despesas do mês, Pessoal × Empresa, categorias, gráfico de 6 meses | Logado |
+| `/transacoes` | Lista com busca por descrição e paginação | Logado |
+| `/transacoes/nova` · `/transacoes/:id` | Formulário de transação | Logado |
+| `/categorias` | Categorias agrupadas em Despesas e Receitas | Logado |
+| `/categorias/nova` · `/categorias/:id` | Formulário com tipo e cor | Logado |
+| `/perfil` | Nome, perfil fiscal (PF/MEI/ME) e atividade do MEI | Logado |
+| `/admin/painel` | Estatísticas agregadas, gráficos e parâmetros vigentes | **ADMIN** |
+| `/admin/parametros` | Parâmetros fiscais com filtro por situação (vigente, futuro, encerrado) | **ADMIN** |
+| `/admin/parametros/novo` · `/admin/parametros/:id` | Formulário de parâmetro | **ADMIN** |
+
+¹ Quem já está logado é levado direto para a tela inicial do seu perfil (`/dashboard` ou `/admin/painel`).
+
+### Cadastro: "Para mim" ou "Para minha empresa"
+
+O backend trabalha com três perfis fiscais. A tela traduz a escolha assim:
+
+| Escolha na tela | Etapa 2 | `perfilFiscal` enviado |
+|---|---|---|
+| Para mim | — | `PF` |
+| Para minha empresa | "Sua empresa é" **MEI** + atividade (comércio, serviço, ambos) | `MEI` |
+| Para minha empresa | "Sua empresa é" **Microempresa** | `ME` |
+
+## Autenticação
+
+```
+Login ──POST /auth/login──▶ { token, expiresIn }
+  │
+  └─▶ token salvo em localStorage ("fincontrol_token")
+        │
+        ├─ AuthService lê o payload do JWT: upn (e-mail), groups (perfil), exp (validade)
+        ├─ authInterceptor envia  Authorization: Bearer <token>  em toda chamada à API
+        └─ resposta 401 ─▶ logout automático e volta ao login ("Sua sessão expirou")
 ```
 
-## Building
+| Peça | Arquivo | Função |
+|---|---|---|
+| `AuthService` | `core/auth/auth.service.ts` | Login, cadastro, logout, `isLoggedIn()`, `isAdmin()`, rota inicial por perfil |
+| `authInterceptor` | `core/auth/auth.interceptor.ts` | Anexa o token (exceto em `/auth/*`) e trata 401 |
+| `authGuard` | `core/auth/auth.guard.ts` | Exige usuário logado |
+| `adminGuard` | `core/auth/auth.guard.ts` | Exige perfil ADMIN |
+| `visitanteGuard` | `core/auth/auth.guard.ts` | Tira usuários logados das telas de login/cadastro |
 
-To build the project run:
+> O frontend **só lê** o token para mostrar dados na tela. Quem valida assinatura, validade e perfil é o backend, em toda requisição.
 
-```bash
-ng build
+## Comunicação com a API
+
+O endereço da API fica em **`src/app/core/api.ts`**:
+
+```ts
+export const API_URL = 'http://localhost:8080';
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+| Serviço | Endpoints usados |
+|---|---|
+| `AuthService` | `POST /auth/register`, `POST /auth/login` |
+| `UsuarioService` | `GET /usuarios/me`, `PUT /usuarios/me` |
+| `TransacaoService` | `GET/POST /transacoes`, `GET/PUT/DELETE /transacoes/{id}` |
+| `CategoriaService` | `GET/POST /categorias`, `GET/PUT/DELETE /categorias/{id}` |
+| `AdminService` | `GET /admin/estatisticas`, CRUD `/admin/parametros` |
 
-## Running unit tests
+**Erros:** o backend responde no formato RFC 7807. A função `mensagemDeErro()` (em `core/api.ts`) transforma a resposta em uma frase para a tela: usa a lista `errors` (erros de campo) ou o `detail`.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+**Detalhes importantes:**
+- `GET /transacoes` é paginado (máximo 100 por página). Para os totais do dashboard, `TransacaoService.findTodas()` busca as páginas em sequência.
 
-```bash
-ng test
-```
+## Identidade visual
 
-## Running end-to-end tests
+| Token | Cor | Uso |
+|---|---|---|
+| `--fc-roxo` | `#3B1478` | Cor da marca: barra superior, fundos de destaque |
+| `--fc-roxo-escuro` | `#2A0E57` | Rodapé, menu no celular |
+| `--fc-primary` / `--fc-roxo-medio` | `#4C1D95` | Botões principais, links, foco |
+| `--fc-roxo-claro` | `#F3EDFC` | Fundos suaves, item selecionado |
+| `--fc-amarelo` | `#FACC15` | Destaques, botão "Começar grátis", avatar |
+| `--fc-azul` / `--fc-danger` | `#2B5FB4` / `#E0384B` | Valores positivos / negativos |
+| `--fc-success` | `#1E8A5F` | Confirmações e situação "vigente" |
 
-For end-to-end (e2e) testing, run:
+- **Logo:** `public/logo/fincontrol-simbolo-fundo-claro.svg` e `...-fundo-escuro.svg`. No app ela é desenhada pelo componente `<app-logo>` (SVG embutido), com as opções `[pequeno]` e `[fundoClaro]`.
+- **Favicon:** `public/favicon.svg`.
+- Todos os tokens ficam no `:root` de `src/styles.css`, e o tema do Material em `src/material-theme.scss`.
 
-```bash
-ng e2e
-```
+## Padrões de código
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- **Componentes standalone** com `inject()` e estado em **signals** (`signal`, `computed`, `toSignal`).
+- **Campos de formulário:** classe global `.campo` (rótulo acima, caixa simples) em vez de `mat-form-field`. Os erros aparecem depois que o campo é tocado ou quando o usuário tenta enviar.
+- **Valores monetários:** use `<app-valor [valor]="x" [negativar]="ehDespesa" />`. Ele formata em pt-BR, deixa os centavos menores e pinta de azul ou vermelho.
+- **Exclusões** sempre passam pelo `ConfirmDialog` (`shared/confirm-dialog`).
+- **Avisos** usam `MatSnackBar` no topo da tela.
+- **Rotas** usam `loadComponent` (cada tela é carregada sob demanda).
 
-## Additional Resources
+## Publicação no GitHub Pages
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+O workflow **`.github/workflows/deploy-pages.yml`** roda a cada push na `main` (ou na branch de trabalho) e:
+
+1. instala as dependências e compila com `--base-href /topicos-2-front/`;
+2. copia o `index.html` para `404.html`, para que links diretos (ex.: `/admin/painel`) abram o app;
+3. publica o resultado na branch **`gh-pages`**.
+
+Configuração no GitHub (uma vez): **Settings → Pages → Source: Deploy from a branch → `gh-pages` / root**.
+
+> O site publicado continua chamando a API em `localhost:8080`. Por isso, para usar o login, o backend precisa estar rodando na máquina de quem acessa. O backend já libera `https://ctamanda.github.io` no CORS.
+
+## Observações
+
+- As telas antigas de **Estados** e **Municípios** continuam no código (`components/estados`, `components/municipios`), mas estão fora das rotas, porque o backend atual não tem esses endpoints.
+- Datas e moeda usam o locale **pt-BR** (registrado em `app.config.ts`).

@@ -8,10 +8,10 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { mensagemDeErro } from '../../../core/api';
 import { AuthService } from '../../../core/auth/auth.service';
 import { Logo } from '../../shared/logo/logo';
-import { Skyline } from '../../shared/skyline/skyline';
+import { FundoAuth } from '../../shared/fundo-auth/fundo-auth';
 
 @Component({
-  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatIconModule, MatProgressSpinnerModule, Logo, Skyline],
+  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatIconModule, MatProgressSpinnerModule, Logo, FundoAuth],
   selector: 'app-login',
   styleUrl: '../auth.css',
   templateUrl: './login.html',

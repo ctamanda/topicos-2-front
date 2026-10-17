@@ -6,13 +6,14 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { mensagemDeErro } from '../../../core/api';
 import { AuthService } from '../../../core/auth/auth.service';
 import { AtividadeMei, PerfilFiscal, ROTULOS_ATIVIDADE_MEI } from '../../../models/usuario.model';
+import { FundoAuth } from '../../shared/fundo-auth/fundo-auth';
 import { Logo } from '../../shared/logo/logo';
-import { Skyline } from '../../shared/skyline/skyline';
 
+type TipoConta = 'MIM' | 'EMPRESA';
 type Campo = 'nome' | 'email' | 'password' | 'confirmacao' | 'atividadeMei';
 
 @Component({
@@ -24,7 +25,7 @@ type Campo = 'nome' | 'email' | 'password' | 'confirmacao' | 'atividadeMei';
     MatIconModule,
     MatProgressSpinnerModule,
     Logo,
-    Skyline,
+    FundoAuth,
   ],
   selector: 'app-register',
   styleUrl: '../auth.css',
@@ -35,15 +36,15 @@ export class Register {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  protected readonly perfis: { valor: PerfilFiscal; icone: string; titulo: string; sub: string }[] = [
-    { valor: 'PF', icone: 'person_outline', titulo: 'Para mim', sub: 'Pessoa Física' },
-    { valor: 'MEI', icone: 'storefront', titulo: 'MEI', sub: 'Microempreendedor' },
-    { valor: 'ME', icone: 'domain', titulo: 'Empresa', sub: 'Microempresa' },
-  ];
   protected readonly atividades = Object.entries(ROTULOS_ATIVIDADE_MEI) as [AtividadeMei, string][];
 
+  // "Para mim" vira perfil PF; "Para minha empresa" vira MEI ou ME (escolhido na etapa 2).
+  protected readonly tipoConta = signal<TipoConta>(
+    inject(ActivatedRoute).snapshot.queryParamMap.get('perfil') === 'empresa' ? 'EMPRESA' : 'MIM',
+  );
+
   protected readonly form = this.fb.nonNullable.group({
-    perfilFiscal: ['PF' as PerfilFiscal, Validators.required],
+    perfilFiscal: [(this.tipoConta() === 'EMPRESA' ? 'MEI' : 'PF') as PerfilFiscal, Validators.required],
     nome: ['', [Validators.required, Validators.maxLength(100)]],
     email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
     atividadeMei: [null as AtividadeMei | null],
@@ -59,7 +60,7 @@ export class Register {
     () => !!this.valores().password && this.valores().password === this.valores().confirmacao,
   );
 
-  // Etapa 1: perfil + nome + e-mail. Etapa 2: dados de acesso.
+  // Etapa 1: tipo de conta + nome + e-mail. Etapa 2: dados de acesso.
   protected readonly etapa = signal<1 | 2>(1);
   protected readonly tentouAvancar = signal(false);
   protected readonly carregando = signal(false);
@@ -68,12 +69,8 @@ export class Register {
 
   constructor() {
     // O back exige atividade quando o perfil é MEI (e a ignora nos demais).
-    this.form.controls.perfilFiscal.valueChanges.subscribe((perfil) => {
-      const atividade = this.form.controls.atividadeMei;
-      atividade.setValidators(perfil === 'MEI' ? Validators.required : null);
-      if (perfil !== 'MEI') atividade.setValue(null);
-      atividade.updateValueAndValidity();
-    });
+    this.form.controls.perfilFiscal.valueChanges.subscribe((perfil) => this.ajustarAtividade(perfil));
+    this.ajustarAtividade(this.form.controls.perfilFiscal.value);
   }
 
   invalido(campo: Campo): boolean {
@@ -81,7 +78,12 @@ export class Register {
     return c.invalid && (c.touched || this.tentouAvancar());
   }
 
-  selecionarPerfil(perfil: PerfilFiscal): void {
+  escolherTipo(tipo: TipoConta): void {
+    this.tipoConta.set(tipo);
+    this.form.controls.perfilFiscal.setValue(tipo === 'EMPRESA' ? 'MEI' : 'PF');
+  }
+
+  escolherPerfilEmpresa(perfil: 'MEI' | 'ME'): void {
     this.form.controls.perfilFiscal.setValue(perfil);
   }
 
@@ -122,5 +124,12 @@ export class Register {
         }
       },
     });
+  }
+
+  private ajustarAtividade(perfil: PerfilFiscal): void {
+    const atividade = this.form.controls.atividadeMei;
+    atividade.setValidators(perfil === 'MEI' ? Validators.required : null);
+    if (perfil !== 'MEI') atividade.setValue(null);
+    atividade.updateValueAndValidity({ emitEvent: false });
   }
 }
