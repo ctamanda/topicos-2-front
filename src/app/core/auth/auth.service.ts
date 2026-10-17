@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { API_URL } from '../api';
 import { JwtClaims, LoginRequest, LoginResponse, RegisterRequest } from '../../models/auth.model';
+import { Usuario } from '../../models/usuario.model';
 
 const TOKEN_KEY = 'fincontrol_token';
 
@@ -38,9 +39,9 @@ export class AuthService {
       .pipe(tap((res) => this.salvar(res.token)));
   }
 
-  // O back devolve texto puro ("Usuário x criado com sucesso"), não JSON.
-  register(dados: RegisterRequest): Observable<string> {
-    return this.http.post(`${API_URL}/auth/register`, dados, { responseType: 'text' });
+  // 201 com os dados públicos do usuário criado (sem senha).
+  register(dados: RegisterRequest): Observable<Usuario> {
+    return this.http.post<Usuario>(`${API_URL}/auth/register`, dados);
   }
 
   logout(motivo?: 'expirou'): void {

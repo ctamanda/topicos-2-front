@@ -193,7 +193,6 @@ export const API_URL = 'http://localhost:8080';
 **Erros:** o backend responde no formato RFC 7807. A função `mensagemDeErro()` (em `core/api.ts`) transforma a resposta em uma frase para a tela: usa a lista `errors` (erros de campo) ou o `detail`.
 
 **Detalhes importantes:**
-- `POST /auth/register` devolve **texto puro**, por isso o `AuthService` usa `responseType: 'text'`.
 - `GET /transacoes` é paginado (máximo 100 por página). Para os totais do dashboard, `TransacaoService.findTodas()` busca as páginas em sequência.
 
 ## Identidade visual
